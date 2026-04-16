@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AgroSmart Dashboard</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #0f172a;
+  color: white;
+}
+
+header {
+  background: #020617;
+  padding: 15px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.title {
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.value {
+  font-size: 28px;
+  margin-top: 10px;
+}
+
+.status-on {
+  color: #22c55e;
+}
+
+.status-off {
+  color: #ef4444;
+}
+
+.alert {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+select {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #0f172a;
+  color: white;
+}
+
+.footer {
+  text-align: center;
+  padding: 10px;
+  color: #94a3b8;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>🌱 AgroSmart Crop Monitoring System</header>
+
+<div class="container">
+
+  <div class="card">
+    <div class="title">Soil Moisture</div>
+    <div class="value" id="moisture">--</div>
+  </div>
+
+  <div class="card">
+    <div class="title">Temperature</div>
+    <div class="value" id="temp">--</div>
+  </div>
+
+  <div class="card">
+    <div class="title">Rain Status</div>
+    <div class="value" id="rain">--</div>
+  </div>
+
+  <div class="card">
+    <div class="title">Select Crop</div>
+    <select id="crop">
+      <option>Wheat</option>
+      <option>Rice</option>
+      <option>Vegetables</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <div class="title">Pump Status</div>
+    <div class="value" id="pump">--</div>
+  </div>
+
+  <div class="card">
+    <div class="title">System Alert</div>
+    <div class="value alert" id="alert">--</div>
+  </div>
+
+</div>
+
+<div class="footer">
+  LIVE IoT Simulation • Smart Irrigation System
+</div>
+
+<script>
+function updateData() {
+  let moisture = Math.floor(Math.random() * 100);
+  let temp = Math.floor(Math.random() * 15 + 25);
+  let rain = Math.random() > 0.7 ? "Yes" : "No";
+  let crop = document.getElementById("crop").value;
+
+  let threshold = 40;
+  if (crop === "Rice") threshold = 60;
+  if (crop === "Vegetables") threshold = 50;
+
+  document.getElementById("moisture").innerText = moisture + "%";
+  document.getElementById("temp").innerText = temp + "°C";
+  document.getElementById("rain").innerText = rain;
+
+  let pumpStatus = "OFF";
+  let alert = "All conditions normal";
+
+  if (moisture < threshold && rain === "No") {
+    pumpStatus = "ON";
+    alert = "⚠ Irrigation Required";
+  } else if (moisture > 80) {
+    alert = "⚠ Overwatering Risk";
+  }
+
+  document.getElementById("pump").innerHTML =
+    pumpStatus === "ON"
+      ? '<span class="status-on">ON</span>'
+      : '<span class="status-off">OFF</span>';
+
+  document.getElementById("alert").innerText = alert;
+}
+
+setInterval(updateData, 2000);
+</script>
+
+</body>
+</html>
